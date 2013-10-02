@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>minput Test Suite</title>
+        <link rel="stylesheet" type="text/css" href="../css/minput.css">
+        <link type="text/css" rel="stylesheet" href="../js/yui230/logger/assets/logger.css">
+        <link type="text/css" rel="stylesheet" href="../js/yui230/yuitest/assets/testlogger.css">     
+
+       <script type="text/javascript" src="../js/yui230/yahoo/yahoo-min.js" ></script>
+        <script type="text/javascript" src="../js/yui230/dom/dom-min.js"></script>
+        <script type="text/javascript" src="../js/yui230/event/event-min.js" ></script>
+        <script type="text/javascript" src="../js/yui230/logger/logger-min.js"></script>
+        <script type="text/javascript" src="../js/yui230/yuitest/yuitest-beta-min.js"></script>
+        <script type="text/javascript" src="../js/mijs/minput.js" ></script>
+        <script type="text/javascript" src="../js/mijs/minputdoor.js" ></script>
+        <script type="text/javascript" src="../js/mijs/minputtext.js" ></script>
+        
+        <script type="text/javascript">
+            function rand (n){
+                return ( Math.floor ( Math.random ( ) * n + 1 ) );
+            }
+            
+            (function() {
+                var Y     = YAHOO.util,
+                    tool   = YAHOO.tool,
+                    suite = new tool.TestSuite("minputSuite");
+                                       
+                Y.Event.onDOMReady(function() {
+                    var logger             = new tool.TestLogger(null, { height: '80%' });
+                    var inpt                 = x.inputtexts;
+                    var inputtextname = x.inputtextname;
+                    var clickCount        = 5000;
+                    var charCount        = 5000;
+                    
+                    var count = Y.Dom.getElementsByClassName(inputtextname).length;
+                    
+                    suite.add( new tool.TestCase({
+                        name: 'minput',
+                        
+                        test_InputTexts: function() {
+                            Y.Assert.areEqual(count, inpt.length, 'incorrect element');
+                            for (var i = 0, len = count.length; i < len; ++i) {
+                                Y.Assert.areEqual(inpt[i].text.html.innerHTML,inpt[i].text, 'incorrect element');
+                            }
+                        },
+                        
+                        test_InputTextFocus: function() {
+                            try{
+                                var text = inpt[0].text;
+                            }catch(e){
+                                alert("minput has no inputtext!");
+                            }
+                            for (var i = 0 ; i < clickCount; ++i) {
+                                var ra = rand(count+1);
+                                if(ra == (count+1)){
+                                    x.setFocused();
+                                }else{
+                                    inpt[ra-1].onClick();
+                                }
+                            }
+                            x.setFocused(); //last sure to clear cursor by clicking on doument
+                            for (var j = 0; j < count; ++j) {
+                                 Y.Assert.areEqual(inpt[j].html.innerHTML,text, 'incorrect element');
+                            }
+                        }/**,
+                        
+                        test_InputTextAddChar: function() {
+                            var results = new Array();
+                            //yesy chars, don't include < and >
+                            var testChars = "`1234567890-=\\][poiuytrewqasdfghjkl;'/.,mnbvcxz ~!@#$%^&*()_+|}{POIUYTREWQASDFGHJKL:\"?MNBVCXZ";
+                            var charsLen = testChars.length;
+                            for (var i = 0 ; i < charCount; ++i) {
+                                var ra         = rand(count+1);
+                                var raChar  = testChars.charAt[rand(charsLen)-1];
+                                if(ra == (count+1)){
+                                    x.setFocused();
+                                }else{
+                                    inpt[ra-1].onClick();
+                                    if(results[ra-1] == ''){
+                                        results[ra-1] = inpt[ra-1].text;
+                                    }
+                                    results[ra-1] += raChar; //store chars in a local variable
+                                }
+                                //x.keyListener(raChar);
+                            }
+                            x.setFocused(); //last sure to clear cursor by clicking on doument
+                            for (var i = 0; i < count; ++i) {
+                                 //compare local string and page's text
+                                 Y.Assert.areEqual(inpt[i].html.innerHTML,results[i], 'incorrect element');
+                            }
+                        }**/
+                    })); 
+                    tool.TestRunner.add(suite);
+
+                    if (parent && parent != window) {
+                        tool.TestManager.load();
+                    } else {
+                        tool.TestRunner.run();
+                    }
+                });
+            })();
+        </script>
+    </head>
+    <body>
+        <div id="name" class="minputtext" >
+            <div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div><div class="char"></div>
+        </div>
+        <div id="telephone" class="minputtext">
+            <div class="char"></div>
+        </div>
+    </body>
+</html>

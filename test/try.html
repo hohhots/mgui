@@ -1,0 +1,15 @@
+ <body>
+<form action="" method="POST" id="myForm">
+<input type="text" name="myText" onKeyDown="changeVal()">
+
+<script type="text/javascript" language="JavaScript">
+s1 = new String(myForm.myText.value);
+
+function changeVal() {
+    s1 = "You pressed a key";
+    return s1.toUpperCase();
+}
+
+</script>
+</form>
+</body>
